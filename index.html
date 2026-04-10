@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Immotrace – Legionellen­überwachung für Gebäude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:       #1d3250;
+    --navy-light: #2a4568;
+    --navy-dark:  #152640;
+    --navy-side:  #243c58;
+    --red:        #bf3a1c;
+    --red-light:  #d4441f;
+    --silver:     #c8cdd4;
+    --olive:      #4e5a35;
+    --cream:      #dcd9c8;
+    --white:      #f0eeea;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Barlow', sans-serif; background: var(--navy-dark); color: var(--white); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.85rem 3rem;
+    background: rgba(21,38,64,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(200,205,212,0.07);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; }
+  .nav-wordmark { display: flex; flex-direction: column; }
+  .nav-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; letter-spacing: 0.13em; color: var(--white); line-height: 1; }
+  .nav-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 0.58rem; letter-spacing: 0.18em; color: var(--silver); text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
+  .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--silver); text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta { background: var(--red) !important; color: var(--white) !important; padding: .42rem 1rem; border-radius: 2px; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 480px; position: relative; overflow: hidden; }
+  .hero-grid { position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(200,205,212,0.025) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(200,205,212,0.025) 1px, transparent 1px);
+    background-size: 54px 54px; }
+  .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 9rem 3.5rem 4rem 5rem; position: relative; z-index: 2; }
+  .eyebrow { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 0.74rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--red); margin-bottom: 1.2rem; }
+  .hero-headline { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(2.8rem, 4.6vw, 4.4rem); line-height: 0.97; text-transform: uppercase; color: var(--white); margin-bottom: 1.5rem; }
+  .hero-headline .accent { color: var(--red); }
+  .hero-sub { font-size: 1.03rem; font-weight: 300; line-height: 1.76; color: var(--silver); max-width: 470px; margin-bottom: 2.4rem; }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--red); color: var(--white); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.87rem; letter-spacing: 0.15em; text-transform: uppercase; padding: .82rem 1.7rem; border: none; border-radius: 2px; cursor: pointer; text-decoration: none; transition: background .2s, transform .15s; display: inline-block; }
+  .btn-primary:hover { background: var(--red-light); transform: translateY(-1px); }
+  .btn-ghost { color: var(--silver); font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid rgba(200,205,212,.4); padding-bottom: 2px; transition: color .2s, border-color .2s; }
+  .btn-ghost:hover { color: var(--white); border-color: var(--white); }
+  .hero-right { position: relative; display: flex; align-items: center; justify-content: center; background: var(--red); clip-path: polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%); }
+
+  /* STATS */
+  .stats-bar { background: var(--navy); border-top: 2px solid var(--red); border-bottom: 1px solid rgba(200,205,212,.07); display: grid; grid-template-columns: repeat(4,1fr); }
+  .stat-item { padding: 1.7rem 2rem; text-align: center; border-right: 1px solid rgba(200,205,212,.07); }
+  .stat-item:last-child { border-right: none; }
+  .stat-number { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 2.1rem; color: var(--red); line-height: 1; }
+  .stat-label { font-size: 0.77rem; color: var(--silver); letter-spacing: .04em; margin-top: .33rem; line-height: 1.4; }
+
+  /* GENERIC SECTION */
+  section { padding: 6rem 5rem; }
+  .section-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: .71rem; letter-spacing: .34em; text-transform: uppercase; color: var(--red); margin-bottom: .75rem; }
+  .section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(1.85rem,2.9vw,2.75rem); text-transform: uppercase; line-height: 1.07; color: var(--white); margin-bottom: 1.1rem; }
+  .section-body { font-weight: 300; font-size: .98rem; line-height: 1.8; color: var(--silver); max-width: 530px; }
+
+  /* RISK */
+  .risk { background: var(--navy); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .risk-cards { display: flex; flex-direction: column; gap: 1.1rem; }
+  .risk-card { display: flex; gap: 1.1rem; align-items: flex-start; padding: 1.3rem 1.4rem; background: var(--navy-dark); border-left: 3px solid var(--red); border-radius: 0 2px 2px 0; transition: background .2s; }
+  .risk-card:hover { background: var(--navy-light); }
+  .risk-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: .1rem; }
+  .risk-card h4 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .97rem; text-transform: uppercase; letter-spacing: .06em; color: var(--white); margin-bottom: .28rem; }
+  .risk-card p { font-size: .84rem; color: var(--silver); line-height: 1.65; }
+  .law-box { background: var(--navy-dark); border: 1px solid rgba(200,205,212,.1); border-top: 3px solid var(--red); padding: 1.7rem; margin-top: 1.8rem; border-radius: 2px; }
+  .law-box h4 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .95rem; text-transform: uppercase; letter-spacing: .07em; color: var(--red); margin-bottom: .7rem; }
+  .law-box p { font-size: .85rem; color: var(--silver); line-height: 1.72; }
+
+  /* HOW */
+  .how { background: var(--navy-dark); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .pipeline { display: flex; flex-direction: column; gap: 0; position: relative; }
+  .pipeline::before { content:''; position: absolute; left: 1.85rem; top: 4rem; bottom: 4rem; width: 1px; background: linear-gradient(to bottom, var(--red), rgba(191,58,28,.15)); }
+  .pipe-step { display: flex; gap: 1.4rem; align-items: flex-start; padding: 1.2rem 0; position: relative; z-index: 1; }
+  .pipe-circle { width: 3.7rem; height: 3.7rem; flex-shrink: 0; background: var(--navy); border: 2px solid var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--red); transition: background .2s, color .2s; }
+  .pipe-step:hover .pipe-circle { background: var(--red); color: var(--white); }
+  .pipe-step h4 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .97rem; text-transform: uppercase; letter-spacing: .07em; color: var(--white); margin-bottom: .28rem; padding-top: .58rem; }
+  .pipe-step p { font-size: .84rem; color: var(--silver); line-height: 1.65; }
+
+  /* FEATURES */
+  .features { background: var(--navy); }
+  .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; margin-top: 2.8rem; background: rgba(200,205,212,.06); }
+  .feat-card { background: var(--navy-dark); padding: 2.1rem 1.7rem; position: relative; overflow: hidden; transition: background .25s; }
+  .feat-card::after { content:''; position: absolute; left: 0; bottom: 0; top: 0; width: 3px; background: var(--red); transform: scaleY(0); transition: transform .25s; transform-origin: bottom; }
+  .feat-card:hover { background: #1f3a5c; }
+  .feat-card:hover::after { transform: scaleY(1); }
+  .feat-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 2.6rem; color: rgba(200,205,212,.05); line-height: 1; margin-bottom: .7rem; }
+  .feat-icon { font-size: 1.4rem; margin-bottom: .7rem; display: block; }
+  .feat-card h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.02rem; letter-spacing: .05em; text-transform: uppercase; color: var(--white); margin-bottom: .65rem; }
+  .feat-card p { font-size: .84rem; color: var(--silver); line-height: 1.7; }
+  .feat-badge { display: inline-block; margin-top: .9rem; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: .67rem; letter-spacing: .18em; text-transform: uppercase; color: var(--red); border: 1px solid var(--red); padding: .17rem .52rem; border-radius: 1px; }
+
+  /* BENEFITS */
+  .benefits { background: var(--red); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .benefits .section-title { color: #fff; }
+  .benefits .section-label { color: rgba(255,255,255,.52); }
+  .benefits .section-body { color: rgba(255,255,255,.82); }
+  .ben-list { display: flex; flex-direction: column; gap: 1rem; }
+  .ben-item { display: flex; gap: 1rem; align-items: flex-start; padding: 1.25rem 1.35rem; background: rgba(255,255,255,.08); border-radius: 2px; transition: background .2s; }
+  .ben-item:hover { background: rgba(255,255,255,.14); }
+  .ben-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: .1rem; }
+  .ben-item h4 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .93rem; text-transform: uppercase; letter-spacing: .06em; color: #fff; margin-bottom: .28rem; }
+  .ben-item p { font-size: .83rem; color: rgba(255,255,255,.76); line-height: 1.64; }
+
+  /* AUDIENCE */
+  .audience { background: var(--navy-dark); }
+  .audience-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.7rem; margin-top: 2.8rem; }
+  .aud-card { padding: 2.1rem 1.7rem; border: 1px solid rgba(200,205,212,.1); background: var(--navy); border-radius: 2px; position: relative; overflow: hidden; transition: border-color .25s; }
+  .aud-card:hover { border-color: var(--red); }
+  .aud-bg { position: absolute; top: -.4rem; right: -.4rem; font-size: 4.2rem; opacity: .04; pointer-events: none; }
+  .aud-card h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.12rem; text-transform: uppercase; letter-spacing: .07em; color: var(--white); margin-bottom: .95rem; }
+  .aud-card ul { list-style: none; display: flex; flex-direction: column; gap: .52rem; }
+  .aud-card li { font-size: .84rem; color: var(--silver); padding-left: 1rem; position: relative; line-height: 1.5; }
+  .aud-card li::before { content:'—'; position: absolute; left: 0; color: var(--red); }
+
+  /* CTA */
+  .cta-section { background: var(--navy); text-align: center; padding: 7rem 5rem; position: relative; overflow: hidden; }
+  .cta-glow { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(191,58,28,.12) 0%, transparent 68%); }
+  .cta-section .section-title { font-size: clamp(1.9rem,3.4vw,3rem); max-width: 660px; margin: .75rem auto 1.3rem; }
+  .cta-section .section-body { margin: 0 auto 2rem; text-align: center; }
+  .form-row { display: flex; gap: .7rem; justify-content: center; flex-wrap: wrap; margin-bottom: .9rem; }
+  .form-input { background: rgba(255,255,255,.05); border: 1px solid rgba(200,205,212,.17); color: var(--white); font-family: 'Barlow', sans-serif; font-size: .92rem; padding: .78rem 1.05rem; border-radius: 2px; outline: none; min-width: 215px; transition: border-color .2s; }
+  .form-input::placeholder { color: rgba(200,205,212,.33); }
+  .form-input:focus { border-color: var(--red); }
+
+  /* FOOTER */
+  footer { background: var(--navy-dark); border-top: 2px solid var(--red); padding: 2.4rem 5rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
+  .footer-logo { display: flex; align-items: center; gap: .85rem; }
+  .footer-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: .12em; color: var(--white); }
+  .footer-sub { font-size: .7rem; letter-spacing: .14em; color: var(--silver); text-transform: uppercase; margin-top: .18rem; }
+  .footer-right { font-size: .77rem; color: rgba(200,205,212,.36); text-align: right; }
+
+  /* ANIM */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .58s ease, transform .58s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* FOOTER LINK BUTTONS */
+  .footer-link { background: none; border: none; color: rgba(200,205,212,.5); cursor: pointer; font-size: .77rem; font-family: 'Barlow', sans-serif; padding: 0; transition: color .2s; }
+  .footer-link:hover { color: var(--white); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 300;
+    background: rgba(10,20,38,0.88);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .modal-box {
+    background: var(--navy);
+    border: 1px solid rgba(200,205,212,0.12);
+    border-top: 3px solid var(--red);
+    border-radius: 3px;
+    width: 100%; max-width: 680px;
+    max-height: 88vh;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .modal-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 1.5rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--white); padding: 1.8rem 2rem 1rem; flex-shrink: 0;
+    border-bottom: 1px solid rgba(200,205,212,0.08);
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1.2rem;
+    background: none; border: none; color: var(--silver); font-size: 1.1rem;
+    cursor: pointer; line-height: 1; transition: color .2s;
+  }
+  .modal-close:hover { color: var(--white); }
+  .modal-body {
+    overflow-y: auto; padding: 1.5rem 2rem 2rem;
+    font-size: .88rem; color: var(--silver); line-height: 1.75;
+  }
+  .modal-body h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: .95rem; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--white);
+    margin: 1.4rem 0 .5rem;
+  }
+  .modal-body h3:first-child { margin-top: 0; }
+  .modal-body p { margin-bottom: .6rem; }
+  .modal-body a { color: var(--red); text-decoration: none; }
+  .modal-body a:hover { text-decoration: underline; }
+  .modal-body strong { color: var(--white); }
+
+  @media (max-width: 960px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .risk, .how, .benefits { grid-template-columns: 1fr; gap: 3rem; }
+    .features-grid, .audience-grid { grid-template-columns: 1fr; }
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; text-align: center; }
+    .footer-right { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGO SVG SYMBOL — faithful recreation of photo ═══ -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden">
+<defs>
+<symbol id="IT" viewBox="0 0 200 300">
+  <!-- Overall navy background -->
+  <rect width="200" height="300" fill="#1d3250"/>
+  <!-- Left side darker panel -->
+  <rect x="0" y="0" width="46" height="300" fill="#243c58"/>
+  <!-- Subtle grid lines matching the original photo -->
+  <line x1="0"   y1="186" x2="200" y2="186" stroke="#c8cdd4" stroke-width="0.6" opacity="0.28"/>
+  <line x1="46"  y1="186" x2="46"  y2="300" stroke="#c8cdd4" stroke-width="0.6" opacity="0.28"/>
+  <line x1="196" y1="186" x2="196" y2="300" stroke="#c8cdd4" stroke-width="0.6" opacity="0.28"/>
+  <line x1="0"   y1="296" x2="200" y2="296" stroke="#c8cdd4" stroke-width="0.6" opacity="0.28"/>
+  <!-- Red block (top, offset right — as in photo) -->
+  <rect x="46" y="0" width="154" height="186" fill="#bf3a1c"/>
+  <!-- Concentric open-arc spiral rings, silver/light-gray on red -->
+  <!-- Ring 1 — outermost, large gap at bottom-right -->
+  <circle cx="120" cy="90" r="70" fill="none" stroke="#c2c0bc" stroke-width="8"
+          stroke-dasharray="380 60" stroke-dashoffset="20" stroke-linecap="round"/>
+  <!-- Ring 2 -->
+  <circle cx="120" cy="90" r="53" fill="none" stroke="#c2c0bc" stroke-width="7"
+          stroke-dasharray="280 55" stroke-dashoffset="75" stroke-linecap="round"/>
+  <!-- Ring 3 -->
+  <circle cx="120" cy="90" r="37" fill="none" stroke="#c2c0bc" stroke-width="6.5"
+          stroke-dasharray="190 48" stroke-dashoffset="130" stroke-linecap="round"/>
+  <!-- Inner solid circle same red as background — creates "hole" look -->
+  <circle cx="120" cy="90" r="20" fill="#bf3a1c"/>
+  <!-- Olive/dark-green rounded pill for IMMOTRACE label -->
+  <rect x="52" y="198" width="142" height="32" rx="5" ry="5" fill="#4e5a35"/>
+  <!-- IMMOTRACE in cream/off-white bold condensed -->
+  <text x="123" y="220" text-anchor="middle"
+        font-family="'Barlow Condensed',Arial Narrow,sans-serif"
+        font-weight="800" font-size="17" letter-spacing="2" fill="#dcd9c8">IMMOTRACE</text>
+  <!-- TECHNICAL MONITORING OF BUILDINGS — right-aligned, light silver -->
+  <text x="190" y="248" text-anchor="end"
+        font-family="'Barlow Condensed',Arial Narrow,sans-serif"
+        font-weight="400" font-size="9" letter-spacing="1.6" fill="#bdbbb7">TECHNICAL</text>
+  <text x="190" y="261" text-anchor="end"
+        font-family="'Barlow Condensed',Arial Narrow,sans-serif"
+        font-weight="400" font-size="9" letter-spacing="1.6" fill="#bdbbb7">MONITORING OF</text>
+  <text x="190" y="274" text-anchor="end"
+        font-family="'Barlow Condensed',Arial Narrow,sans-serif"
+        font-weight="400" font-size="9" letter-spacing="1.6" fill="#bdbbb7">BUILDINGS</text>
+</symbol>
+</defs>
+</svg>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 200 300" width="38" height="57"><use href="#IT"/></svg>
+    <div class="nav-wordmark">
+      <span class="nav-brand">IMMOTRACE</span>
+      <span class="nav-tagline">Technical Monitoring of Buildings</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#risiken">Risiken</a></li>
+    <li><a href="#funktionsweise">Funktionsweise</a></li>
+    <li><a href="#leistungen">Leistungen</a></li>
+    <li><a href="#zielgruppen">Zielgruppen</a></li>
+    <li><a href="#kontakt" class="nav-cta">Demo anfragen</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-left">
+    <p class="eyebrow">Legionellenüberwachung · § 3 &amp; § 14a TrinkwV</p>
+    <h1 class="hero-headline">
+      Legionellen<br>
+      erkennen.<br>
+      <span class="accent">Bevor</span> sie<br>
+      schaden.
+    </h1>
+    <p class="hero-sub">
+      Immotrace überwacht kontinuierlich Temperatur und Durchfluss aller Warmwasserleitungen – und schützt Mieter, Eigentümer und Verwalter zuverlässig vor den Folgen einer Legionellenkontamination.
+    </p>
+    <div class="hero-actions">
+      <a href="#kontakt" class="btn-primary">Kostenlose Demo →</a>
+      <a href="#risiken" class="btn-ghost">Warum Legionellen?</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <svg viewBox="0 0 200 300" width="230" height="345"
+         style="filter:drop-shadow(0 10px 50px rgba(0,0,0,0.55))">
+      <use href="#IT"/>
+    </svg>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item fade-in">
+    <div class="stat-number">35–45°C</div>
+    <div class="stat-label">Optimale Vermehrungs­temperatur</div>
+  </div>
+  <div class="stat-item fade-in">
+    <div class="stat-number">~1.000</div>
+    <div class="stat-label">Legionellose-Fälle/Jahr in D</div>
+  </div>
+  <div class="stat-item fade-in">
+    <div class="stat-number">§ 14a</div>
+    <div class="stat-label">TrinkwV – gesetzliche Pflicht</div>
+  </div>
+  <div class="stat-item fade-in">
+    <div class="stat-number">24/7</div>
+    <div class="stat-label">Kontinuierliches Monitoring</div>
+  </div>
+</div>
+
+<!-- RISK -->
+<section class="risk" id="risiken">
+  <div class="fade-in">
+    <p class="section-label">Das Risiko</p>
+    <h2 class="section-title">Legionellen –<br>unsichtbar<br>und gefährlich</h2>
+    <p class="section-body">
+      Legionellen gedeihen in stehendem, lauwarmem Wasser. Ohne lückenloses Temperaturmonitoring kann jede Trinkwasseranlage zum Gesundheitsrisiko werden.
+    </p>
+    <div class="law-box">
+      <h4>⚖️ Rechtliche Pflicht für Eigentümer</h4>
+      <p>
+        Nach § 3 und § 14a der Trinkwasserverordnung (TrinkwV) sind Eigentümer von Mehrfamilienhäusern, Hotels und gewerblichen Gebäuden verpflichtet, regelmäßige Untersuchungen auf Legionellen durchzuführen und technische Maßnahmen zu ergreifen. Bei Verstößen drohen Bußgelder bis zu 25.000 € sowie zivilrechtliche und strafrechtliche Haftung.
+      </p>
+    </div>
+  </div>
+  <div class="risk-cards fade-in">
+    <div class="risk-card">
+      <span class="risk-icon">🦠</span>
+      <div>
+        <h4>Legionärskrankheit</h4>
+        <p>Eingeatmete Legionellen-Aerosole aus Duschen oder Klimaanlagen können schwere Pneumonien mit bis zu 10 % Sterblichkeit auslösen.</p>
+      </div>
+    </div>
+    <div class="risk-card">
+      <span class="risk-icon">🚿</span>
+      <div>
+        <h4>Totleitungen &amp; Stagnation</h4>
+        <p>Selten genutzte Leitungsabschnitte und falsch dimensionierte Rohre sind bevorzugte Brutstätten – in der Regel unbemerkt.</p>
+      </div>
+    </div>
+    <div class="risk-card">
+      <span class="risk-icon">🌡️</span>
+      <div>
+        <h4>Kritischer Temperaturabfall</h4>
+        <p>Schon ein kurzzeitiger Abfall der Warmwassertemperatur unter 55 °C ermöglicht explosives Legionellenwachstum innerhalb von Stunden.</p>
+      </div>
+    </div>
+    <div class="risk-card">
+      <span class="risk-icon">⚖️</span>
+      <div>
+        <h4>Haftung &amp; Bußgelder</h4>
+        <p>Ohne Nachweis regelmäßiger Kontrolle haften Eigentümer bei Erkrankungsfällen persönlich – auch strafrechtlich nach § 229 StGB.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="funktionsweise">
+  <div class="pipeline fade-in">
+    <div class="pipe-step">
+      <div class="pipe-circle">01</div>
+      <div>
+        <h4>Sensorinstallation</h4>
+        <p>Temperatur- und Durchflusssensoren werden diskret an Speicher, Verteiler und Entnahmestellen installiert – meist in einem Tag, ohne Betriebsunterbrechung.</p>
+      </div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-circle">02</div>
+      <div>
+        <h4>Kontinuierliche Messung</h4>
+        <p>24/7 werden Warmwassertemperatur, Durchfluss und Stillstandszeiten erfasst und in Echtzeit an das Immotrace-Dashboard übermittelt.</p>
+      </div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-circle">03</div>
+      <div>
+        <h4>Sofortalarmierung</h4>
+        <p>Unterschreitet die Temperatur 55 °C oder wird Stagnation detektiert, erhalten Verantwortliche innerhalb von Minuten Push-, SMS- oder E-Mail-Alarm.</p>
+      </div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-circle">04</div>
+      <div>
+        <h4>Thermische Desinfektion</h4>
+        <p>Optionale automatische Auslösung der thermischen Spülung (≥ 70 °C) bei Risikoerkennung – mit vollständiger Dokumentation.</p>
+      </div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-circle">05</div>
+      <div>
+        <h4>Prüfbericht &amp; Nachweis</h4>
+        <p>Alle Messdaten werden revisionssicher gespeichert und als druckfertiger Prüfbericht für Behörden, Versicherer und Eigentümerversammlungen bereitgestellt.</p>
+      </div>
+    </div>
+  </div>
+  <div class="fade-in">
+    <p class="section-label">Funktionsweise</p>
+    <h2 class="section-title">Vom Sensor<br>zum Nachweis –<br>vollautomatisch.</h2>
+    <p class="section-body">
+      Immotrace schließt die Lücke zwischen gesetzlicher Pflicht und tatsächlicher Kontrolle. Das System misst laufend, warnt sofort und dokumentiert alles – ohne manuellen Aufwand vor Ort.
+    </p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="leistungen">
+  <div class="fade-in">
+    <p class="section-label">Leistungen</p>
+    <h2 class="section-title">Was Immotrace bietet</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card fade-in">
+      <div class="feat-num">01</div>
+      <span class="feat-icon">🌡️</span>
+      <h3>Temperaturmonitoring</h3>
+      <p>Lückenlose Erfassung an Speicher, Verteiler und allen Entnahmestellen. Sofortalarm bei Unterschreitung des 55-°C-Grenzwertes gemäß DVGW W551.</p>
+      <span class="feat-badge">§ 4 TrinkwV</span>
+    </div>
+    <div class="feat-card fade-in">
+      <div class="feat-num">02</div>
+      <span class="feat-icon">💧</span>
+      <h3>Stagnationserkennung</h3>
+      <p>Automatische Detektion von Wasserstillstand in Totleitungen. Das System schlägt Alarm, bevor die kritische Vermehrungsschwelle für Legionellen erreicht wird.</p>
+      <span class="feat-badge">Echtzeit-Alert</span>
+    </div>
+    <div class="feat-card fade-in">
+      <div class="feat-num">03</div>
+      <span class="feat-icon">📊</span>
+      <h3>Revisionssicheres Protokoll</h3>
+      <p>Alle Messdaten DSGVO-konform und manipulationssicher gespeichert. Prüfberichte als PDF abrufbar – sofort, rückwirkend, für jedes Objekt.</p>
+      <span class="feat-badge">Audit-Ready</span>
+    </div>
+    <div class="feat-card fade-in">
+      <div class="feat-num">04</div>
+      <span class="feat-icon">🔔</span>
+      <h3>Sofort-Alarmierung</h3>
+      <p>Push, SMS oder E-Mail – zuständige Personen werden bei jedem Risikoevent in unter 5 Minuten benachrichtigt, rund um die Uhr, 365 Tage.</p>
+      <span class="feat-badge">&lt;5 min Response</span>
+    </div>
+    <div class="feat-card fade-in">
+      <div class="feat-num">05</div>
+      <span class="feat-icon">🔥</span>
+      <h3>Thermische Desinfektion</h3>
+      <p>Integration mit bestehenden Heizungsanlagen: automatische Auslösung und lückenlose Dokumentation der thermischen Spülung bei Risikobefund.</p>
+      <span class="feat-badge">Automatisiert</span>
+    </div>
+    <div class="feat-card fade-in">
+      <div class="feat-num">06</div>
+      <span class="feat-icon">🏢</span>
+      <h3>Multi-Objekt Dashboard</h3>
+      <p>Alle Liegenschaften eines Portfolios auf einer Plattform – web-basiert, mobil abrufbar, ohne Software-Installation. Auch für WEG-Verwalter.</p>
+      <span class="feat-badge">Portfolio-fähig</span>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits" id="vorteile">
+  <div class="fade-in">
+    <p class="section-label">Ihre Vorteile</p>
+    <h2 class="section-title">Schutz auf<br>allen Ebenen.</h2>
+    <p class="section-body">
+      Immotrace schützt nicht nur die Gesundheit Ihrer Mieter – sondern auch Ihre Haftung, Ihre Reputation und den langfristigen Wert Ihrer Immobilien.
+    </p>
+  </div>
+  <div class="ben-list fade-in">
+    <div class="ben-item">
+      <span class="ben-icon">🛡️</span>
+      <div>
+        <h4>Haftungsschutz</h4>
+        <p>Lückenlose Dokumentation entlastet Sie im Schadensfall gegenüber Behörden, Versicherern und Mietern – rechtssicher nach TrinkwV.</p>
+      </div>
+    </div>
+    <div class="ben-item">
+      <span class="ben-icon">💶</span>
+      <div>
+        <h4>Kostensenkung</h4>
+        <p>Frühzeitige Erkennung verhindert teure Sanierungsmaßnahmen und kostspielige Labortest-Zyklen bei bereits eingetretener Kontamination.</p>
+      </div>
+    </div>
+    <div class="ben-item">
+      <span class="ben-icon">✅</span>
+      <div>
+        <h4>Normkonformität</h4>
+        <p>Automatische Erfüllung der Anforderungen aus TrinkwV, DVGW W551 und VDI 3810 – ohne manuellen Mehraufwand oder Vor-Ort-Kontrollen.</p>
+      </div>
+    </div>
+    <div class="ben-item">
+      <span class="ben-icon">📱</span>
+      <div>
+        <h4>Fernüberwachung</h4>
+        <p>Kein Vor-Ort-Termin erforderlich. Alle Objekte jederzeit vom Smartphone oder Desktop im Blick – für Eigentümer und Verwalter gleichermaßen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCE -->
+<section class="audience" id="zielgruppen">
+  <div class="fade-in">
+    <p class="section-label">Zielgruppen</p>
+    <h2 class="section-title">Wer profitiert?</h2>
+  </div>
+  <div class="audience-grid">
+    <div class="aud-card fade-in">
+      <span class="aud-bg">🏢</span>
+      <h3>WEG-Verwalter</h3>
+      <ul>
+        <li>Pflichterfüllung ohne Mehraufwand nachweisen</li>
+        <li>Automatische Protokolle für Eigentümerversammlungen</li>
+        <li>Mehrere Objekte zentral im Blick</li>
+        <li>Haftungsrisiko rechtssicher dokumentieren</li>
+      </ul>
+    </div>
+    <div class="aud-card fade-in">
+      <span class="aud-bg">🏠</span>
+      <h3>Eigentümer &amp; Vermieter</h3>
+      <ul>
+        <li>Mieterpflichten nach TrinkwV erfüllen</li>
+        <li>Haftung im Schadensfall minimieren</li>
+        <li>Fernüberwachung ohne Vor-Ort-Präsenz</li>
+        <li>Bußgelder und Regressforderungen vermeiden</li>
+      </ul>
+    </div>
+    <div class="aud-card fade-in">
+      <span class="aud-bg">🏨</span>
+      <h3>Hotels &amp; Gewerbe</h3>
+      <ul>
+        <li>Besonders hohe Legionellenpflichten im Gastgewerbe</li>
+        <li>Kontinuierlicher Behördennachweis</li>
+        <li>Schutz von Gästen und Mitarbeitern</li>
+        <li>Integration in FM-Systeme möglich</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="kontakt">
+  <div class="cta-glow"></div>
+  <div style="position:relative;z-index:1;">
+    <p class="section-label" style="display:flex;justify-content:center;">Jetzt schützen</p>
+    <h2 class="section-title fade-in">Sprechen Sie uns an –<br>bevor es ein Problem gibt.</h2>
+    <p class="section-body fade-in">Kostenfreie Erstberatung für Ihr Objekt. Wir analysieren Ihre Trinkwasseranlage und zeigen, wie Immotrace Ihre gesetzlichen Pflichten rechtssicher erfüllt.</p>
+    <div class="form-row fade-in">
+      <input type="text"  id="contact-name"  class="form-input" placeholder="Ihr Name">
+      <input type="email" id="contact-email" class="form-input" placeholder="E-Mail-Adresse">
+      <button type="button" onclick="submitContact()" class="btn-primary">Beratung anfragen →</button>
+    </div>
+    <p style="font-size:.75rem;color:rgba(200,205,212,.33);margin-top:.75rem;">Kein Spam · Keine Weitergabe · Nur ein kurzes Gespräch</p>
+  </div>
+</section>
+
+<!-- ═══ IMPRESSUM MODAL ═══ -->
+<div id="modal-impressum" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="imp-title" style="display:none">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-impressum')" aria-label="Schließen">✕</button>
+    <h2 id="imp-title" class="modal-title">Impressum</h2>
+    <div class="modal-body">
+      <h3>Angaben gemäß § 5 TMG</h3>
+      <p><strong>Ippensen und Gregersen GbR</strong><br>Hermannstraße 5<br>26441 Jever<br>Deutschland</p>
+      <h3>Kontakt</h3>
+      <p>Telefon: <a href="tel:+49015792495340">015792495340</a><br>E-Mail: <a href="/cdn-cgi/l/email-protection#7a13141c153a130a0a1f14091f1454141f0e"><span class="__cf_email__" data-cfemail="ff96919990bf968f8f9a918c9a91d1919a8b">[email&#160;protected]</span></a><br>Web: <a href="http://immotrace.de" target="_blank" rel="noopener">immotrace.de</a></p>
+      <h3>Gesellschafter</h3>
+      <p>Helge Peter Ippensen<br>Nils Gregersen</p>
+      <h3>Umsatzsteuer-ID</h3>
+      <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: wird nachgetragen</p>
+      <h3>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h3>
+      <p>Helge Peter Ippensen<br>Hermannstraße 5, 26441 Jever</p>
+      <h3>EU-Streitschlichtung</h3>
+      <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>. Wir sind nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+      <h3>Haftung für Inhalte</h3>
+      <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8–10 TMG sind wir nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen.</p>
+      <h3>Haftung für Links</h3>
+      <p>Unser Angebot enthält Links zu externen Websites Dritter. Für diese fremden Inhalte können wir keine Gewähr übernehmen. Für die Inhalte verlinkter Seiten ist stets der jeweilige Anbieter verantwortlich.</p>
+      <h3>Urheberrecht</h3>
+      <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke unterliegen dem deutschen Urheberrecht. Die Vervielfältigung oder Verbreitung außerhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung des jeweiligen Autors.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DATENSCHUTZ MODAL ═══ -->
+<div id="modal-datenschutz" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ds-title" style="display:none">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-datenschutz')" aria-label="Schließen">✕</button>
+    <h2 id="ds-title" class="modal-title">Datenschutzerklärung</h2>
+    <div class="modal-body">
+      <h3>1. Verantwortlicher (Art. 13 DSGVO)</h3>
+      <p>Ippensen und Gregersen GbR<br>Hermannstraße 5, 26441 Jever<br>E-Mail: <a href="/cdn-cgi/l/email-protection#94fdfaf2fbd4fde4e4f1fae7f1fabafaf1e0"><span class="__cf_email__" data-cfemail="8fe6e1e9e0cfe6ffffeae1fceae1a1e1eafb">[email&#160;protected]</span></a></p>
+      <h3>2. Erhobene Daten &amp; Zweck</h3>
+      <p>Wir verarbeiten personenbezogene Daten (Name, E-Mail) ausschließlich dann, wenn Sie uns über das Kontaktformular kontaktieren. Die Daten werden zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben.</p>
+      <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse).</p>
+      <h3>3. Kontaktformular</h3>
+      <p>Ihre Angaben werden per E-Mail an <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5c35323a331c352c2c39322f393272323928">[email&#160;protected]</a> übermittelt und dort gespeichert, bis die Anfrage abgeschlossen ist. Eine darüber hinausgehende Speicherung erfolgt nur im Rahmen gesetzlicher Aufbewahrungspflichten.</p>
+      <h3>4. Server-Log-Dateien</h3>
+      <p>Der Hosting-Provider erhebt automatisch Server-Log-Dateien (Browsertyp, OS, Referrer, IP-Adresse, Zeitstempel). Diese sind nicht bestimmten Personen zuordenbar und werden nicht mit anderen Daten zusammengeführt. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</p>
+      <h3>5. Cookies</h3>
+      <p>Diese Website verwendet ausschließlich technisch notwendige Cookies (Einwilligungsstatus im localStorage). Es werden keine Tracking- oder Marketing-Cookies gesetzt. Eine Einwilligung ist nach § 25 Abs. 2 Nr. 2 TDDDG nicht erforderlich.</p>
+      <h3>6. Google Fonts</h3>
+      <p>Diese Website lädt Schriftarten über Google Fonts (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland). Dabei wird Ihre IP-Adresse an Google-Server übermittelt. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Datenschutzinformationen von Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</p>
+      <h3>7. Ihre Rechte (Art. 15–22 DSGVO)</h3>
+      <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Anfragen richten Sie an: <a href="/cdn-cgi/l/email-protection#a1c8cfc7cee1c8d1d1c4cfd2c4cf8fcfc4d5"><span class="__cf_email__" data-cfemail="6a03040c052a031a1a0f04190f0444040f1e">[email&#160;protected]</span></a></p>
+      <p>Beschwerderecht: Landesbeauftragter für den Datenschutz Niedersachsen (LfD), Prinzenstraße 5, 30159 Hannover, <a href="https://lfd.niedersachsen.de" target="_blank" rel="noopener">lfd.niedersachsen.de</a></p>
+      <h3>8. Stand</h3>
+      <p>Diese Datenschutzerklärung hat den Stand Januar 2024 und wird bei Bedarf aktualisiert.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ COOKIE BANNER ═══ -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--navy);border-top:2px solid var(--red);padding:1.2rem 3rem;">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;justify-content:space-between;">
+    <p style="font-size:.82rem;color:var(--silver);line-height:1.6;flex:1;min-width:280px;">
+      Diese Website verwendet technisch notwendige Cookies sowie Google Fonts (IP-Übermittlung an Google).
+      Details in unserer <button onclick="openModal('modal-datenschutz')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:.82rem;text-decoration:underline;padding:0;">Datenschutzerklärung</button>.
+    </p>
+    <button class="btn-primary" style="font-size:.8rem;padding:.6rem 1.4rem;flex-shrink:0" onclick="acceptCookies()">Verstanden &amp; Schließen</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg viewBox="0 0 200 300" width="36" height="54"><use href="#IT"/></svg>
+    <div>
+      <div class="footer-brand">IMMOTRACE</div>
+      <div class="footer-sub">Technical Monitoring of Buildings</div>
+    </div>
+  </div>
+  <div style="font-size:.77rem;color:rgba(200,205,212,.44);text-align:center;line-height:1.75;">
+    Ippensen und Gregersen GbR · Hermannstraße 5 · 26441 Jever<br>
+    <a href="tel:+49015792495340" style="color:var(--silver);text-decoration:none;">015792495340</a>
+    &nbsp;·&nbsp;
+    <a href="/cdn-cgi/l/email-protection#573e393138173e2727323924323979393223" style="color:var(--silver);text-decoration:none;"><span class="__cf_email__" data-cfemail="8ae3e4ece5cae3fafaefe4f9efe4a4e4effe">[email&#160;protected]</span></a>
+  </div>
+  <div class="footer-right">
+    <div>© 2024 Immotrace · immotrace.de</div>
+    <div style="margin-top:.38rem;">
+      <button onclick="openModal('modal-impressum')" class="footer-link">Impressum</button>
+      &nbsp;·&nbsp;
+      <button onclick="openModal('modal-datenschutz')" class="footer-link">Datenschutz</button>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+  function openModal(id) { document.getElementById(id).style.display='flex'; document.body.style.overflow='hidden'; }
+  function closeModal(id) { document.getElementById(id).style.display='none'; document.body.style.overflow=''; }
+  document.querySelectorAll('.modal-overlay').forEach(el => {
+    el.addEventListener('click', e => { if (e.target===el) closeModal(el.id); });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key==='Escape') { document.querySelectorAll('.modal-overlay').forEach(m => { m.style.display='none'; }); document.body.style.overflow=''; }
+  });
+
+  function acceptCookies() { localStorage.setItem('it_cookies','1'); document.getElementById('cookie-banner').s
