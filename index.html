@@ -153,8 +153,8 @@
   .footer-right { font-size: .77rem; color: rgba(200,205,212,.36); text-align: right; }
 
   /* ANIM */
-  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .58s ease, transform .58s ease; }
-  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .{ opacity: 1; transform: translateY(0); transition: none; }
+  ..visible { opacity: 1; transform: translateY(0); }
 
   /* FOOTER LINK BUTTONS */
   .footer-link { background: none; border: none; color: rgba(200,205,212,.5); cursor: pointer; font-size: .77rem; font-family: 'Barlow', sans-serif; padding: 0; transition: color .2s; }
@@ -316,19 +316,19 @@
 
 <!-- STATS -->
 <div class="stats-bar">
-  <div class="stat-item fade-in">
+  <div class="stat-item ">
     <div class="stat-number">35–45°C</div>
     <div class="stat-label">Optimale Vermehrungs­temperatur</div>
   </div>
-  <div class="stat-item fade-in">
+  <div class="stat-item ">
     <div class="stat-number">~1.000</div>
     <div class="stat-label">Legionellose-Fälle/Jahr in D</div>
   </div>
-  <div class="stat-item fade-in">
+  <div class="stat-item ">
     <div class="stat-number">§ 14a</div>
     <div class="stat-label">TrinkwV – gesetzliche Pflicht</div>
   </div>
-  <div class="stat-item fade-in">
+  <div class="stat-item ">
     <div class="stat-number">24/7</div>
     <div class="stat-label">Kontinuierliches Monitoring</div>
   </div>
@@ -336,7 +336,7 @@
 
 <!-- RISK -->
 <section class="risk" id="risiken">
-  <div class="fade-in">
+  <div>
     <p class="section-label">Das Risiko</p>
     <h2 class="section-title">Legionellen –<br>unsichtbar<br>und gefährlich</h2>
     <p class="section-body">
@@ -349,7 +349,7 @@
       </p>
     </div>
   </div>
-  <div class="risk-cards fade-in">
+  <div class="risk-cards ">
     <div class="risk-card">
       <span class="risk-icon">🦠</span>
       <div>
@@ -383,7 +383,7 @@
 
 <!-- HOW IT WORKS -->
 <section class="how" id="funktionsweise">
-  <div class="pipeline fade-in">
+  <div class="pipeline ">
     <div class="pipe-step">
       <div class="pipe-circle">01</div>
       <div>
@@ -420,7 +420,7 @@
       </div>
     </div>
   </div>
-  <div class="fade-in">
+  <div>
     <p class="section-label">Funktionsweise</p>
     <h2 class="section-title">Vom Sensor<br>zum Nachweis –<br>vollautomatisch.</h2>
     <p class="section-body">
@@ -431,47 +431,47 @@
 
 <!-- FEATURES -->
 <section class="features" id="leistungen">
-  <div class="fade-in">
+  <div>
     <p class="section-label">Leistungen</p>
     <h2 class="section-title">Was Immotrace bietet</h2>
   </div>
   <div class="features-grid">
-    <div class="feat-card fade-in">
+    <div class="feat-card ">
       <div class="feat-num">01</div>
       <span class="feat-icon">🌡️</span>
       <h3>Temperaturmonitoring</h3>
       <p>Lückenlose Erfassung an Speicher, Verteiler und allen Entnahmestellen. Sofortalarm bei Unterschreitung des 55-°C-Grenzwertes gemäß DVGW W551.</p>
       <span class="feat-badge">§ 4 TrinkwV</span>
     </div>
-    <div class="feat-card fade-in">
+    <div class="feat-card ">
       <div class="feat-num">02</div>
       <span class="feat-icon">💧</span>
       <h3>Stagnationserkennung</h3>
       <p>Automatische Detektion von Wasserstillstand in Totleitungen. Das System schlägt Alarm, bevor die kritische Vermehrungsschwelle für Legionellen erreicht wird.</p>
       <span class="feat-badge">Echtzeit-Alert</span>
     </div>
-    <div class="feat-card fade-in">
+    <div class="feat-card ">
       <div class="feat-num">03</div>
       <span class="feat-icon">📊</span>
       <h3>Revisionssicheres Protokoll</h3>
       <p>Alle Messdaten DSGVO-konform und manipulationssicher gespeichert. Prüfberichte als PDF abrufbar – sofort, rückwirkend, für jedes Objekt.</p>
       <span class="feat-badge">Audit-Ready</span>
     </div>
-    <div class="feat-card fade-in">
+    <div class="feat-card ">
       <div class="feat-num">04</div>
       <span class="feat-icon">🔔</span>
       <h3>Sofort-Alarmierung</h3>
       <p>Push, SMS oder E-Mail – zuständige Personen werden bei jedem Risikoevent in unter 5 Minuten benachrichtigt, rund um die Uhr, 365 Tage.</p>
       <span class="feat-badge">&lt;5 min Response</span>
     </div>
-    <div class="feat-card fade-in">
+    <div class="feat-card ">
       <div class="feat-num">05</div>
       <span class="feat-icon">🔥</span>
       <h3>Thermische Desinfektion</h3>
       <p>Integration mit bestehenden Heizungsanlagen: automatische Auslösung und lückenlose Dokumentation der thermischen Spülung bei Risikobefund.</p>
       <span class="feat-badge">Automatisiert</span>
     </div>
-    <div class="feat-card fade-in">
+    <div class="feat-card ">
       <div class="feat-num">06</div>
       <span class="feat-icon">🏢</span>
       <h3>Multi-Objekt Dashboard</h3>
@@ -483,14 +483,14 @@
 
 <!-- BENEFITS -->
 <section class="benefits" id="vorteile">
-  <div class="fade-in">
+  <div>
     <p class="section-label">Ihre Vorteile</p>
     <h2 class="section-title">Schutz auf<br>allen Ebenen.</h2>
     <p class="section-body">
       Immotrace schützt nicht nur die Gesundheit Ihrer Mieter – sondern auch Ihre Haftung, Ihre Reputation und den langfristigen Wert Ihrer Immobilien.
     </p>
   </div>
-  <div class="ben-list fade-in">
+  <div class="ben-list ">
     <div class="ben-item">
       <span class="ben-icon">🛡️</span>
       <div>
@@ -524,12 +524,12 @@
 
 <!-- AUDIENCE -->
 <section class="audience" id="zielgruppen">
-  <div class="fade-in">
+  <div>
     <p class="section-label">Zielgruppen</p>
     <h2 class="section-title">Wer profitiert?</h2>
   </div>
   <div class="audience-grid">
-    <div class="aud-card fade-in">
+    <div class="aud-card ">
       <span class="aud-bg">🏢</span>
       <h3>WEG-Verwalter</h3>
       <ul>
@@ -539,7 +539,7 @@
         <li>Haftungsrisiko rechtssicher dokumentieren</li>
       </ul>
     </div>
-    <div class="aud-card fade-in">
+    <div class="aud-card ">
       <span class="aud-bg">🏠</span>
       <h3>Eigentümer &amp; Vermieter</h3>
       <ul>
@@ -549,7 +549,7 @@
         <li>Bußgelder und Regressforderungen vermeiden</li>
       </ul>
     </div>
-    <div class="aud-card fade-in">
+    <div class="aud-card ">
       <span class="aud-bg">🏨</span>
       <h3>Hotels &amp; Gewerbe</h3>
       <ul>
@@ -567,9 +567,9 @@
   <div class="cta-glow"></div>
   <div style="position:relative;z-index:1;">
     <p class="section-label" style="display:flex;justify-content:center;">Jetzt schützen</p>
-    <h2 class="section-title fade-in">Sprechen Sie uns an –<br>bevor es ein Problem gibt.</h2>
-    <p class="section-body fade-in">Kostenfreie Erstberatung für Ihr Objekt. Wir analysieren Ihre Trinkwasseranlage und zeigen, wie Immotrace Ihre gesetzlichen Pflichten rechtssicher erfüllt.</p>
-    <div class="form-row fade-in">
+    <h2 class="section-title ">Sprechen Sie uns an –<br>bevor es ein Problem gibt.</h2>
+    <p class="section-body ">Kostenfreie Erstberatung für Ihr Objekt. Wir analysieren Ihre Trinkwasseranlage und zeigen, wie Immotrace Ihre gesetzlichen Pflichten rechtssicher erfüllt.</p>
+    <div class="form-row ">
       <input type="text"  id="contact-name"  class="form-input" placeholder="Ihr Name">
       <input type="email" id="contact-email" class="form-input" placeholder="E-Mail-Adresse">
       <button type="button" onclick="submitContact()" class="btn-primary">Beratung anfragen →</button>
@@ -671,30 +671,7 @@
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Show elements immediately if already in viewport or if IntersectionObserver not supported
-  function activateFadeIns() {
-    const elements = document.querySelectorAll('.fade-in');
-    if (!('IntersectionObserver' in window)) {
-      elements.forEach(el => el.classList.add('visible'));
-      return;
-    }
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
-    elements.forEach(el => obs.observe(el));
-    // Also trigger immediately for elements already visible
-    setTimeout(() => {
-      elements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight) el.classList.add('visible');
-      });
-    }, 100);
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', activateFadeIns);
-  } else {
-    activateFadeIns();
-  }
+  
 
   function openModal(id) { document.getElementById(id).style.display='flex'; document.body.style.overflow='hidden'; }
   function closeModal(id) { document.getElementById(id).style.display='none'; document.body.style.overflow=''; }
